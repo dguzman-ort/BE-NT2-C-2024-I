@@ -3,6 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Cronometro from './components/Cronometro'
+import GlobalContext, { defaultValue } from './components/global/context'
+
 
 // function App() {
 //   // const [count, setCount] = useState(0)
@@ -62,11 +64,13 @@ import Cronometro from './components/Cronometro'
 
 function App() {
 
-  const [estaIniciado, setEstaIniciado] = useState(false)
+  const [estaIniciado, setEstaIniciado] = useState(defaultValue.estaIniciado)
+
+  const [resetCount, setresetCount] = useState(defaultValue.resetCount)
 
   return (
-    <>
-      <Cronometro estaIniciado={estaIniciado} />
+    <GlobalContext.Provider value={{estaIniciado, resetCount}}>
+      <Cronometro />
       <div className="card">
         <button onClick={() => {
           setEstaIniciado(!estaIniciado)
@@ -76,14 +80,15 @@ function App() {
           }
         </button>
         <button onClick={() => {
-
+          setEstaIniciado(false)
+          setresetCount(!resetCount)
         }}>
           Reset
         </button>
 
       </div>
+    </GlobalContext.Provider>
 
-    </>
   )
 }
 

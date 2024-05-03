@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import GlobalContext from "../global/context";
 
 
 let intervalo = null
-const Cronometro = ({ estaIniciado }) => {
+const Cronometro = () => {
 
   const [count, setCount] = useState(0)
 
+  const {estaIniciado, resetCount} = useContext(GlobalContext)
+  
   useEffect(() => {
     console.log("Esta iniciado?", estaIniciado)
     if (estaIniciado) {
@@ -17,6 +20,11 @@ const Cronometro = ({ estaIniciado }) => {
     }
 
   }, [estaIniciado])
+
+  useEffect(() => {
+    console.log("Reset", resetCount);
+    setCount(0)
+  }, [resetCount])
 
   return (
     <div>
