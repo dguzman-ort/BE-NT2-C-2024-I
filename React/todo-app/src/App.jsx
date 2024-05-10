@@ -1,5 +1,4 @@
 import { useState } from 'react'
-
 import './App.css'
 import Todo from './components/Todo'
 import Counters from './components/Counters'
@@ -48,7 +47,6 @@ function App() {
     <>
       <div className="container center">
         <h1 className="center title">TODO App</h1>
-        
         <Counters tareas={todos} />  
 
         <Button 
@@ -61,8 +59,6 @@ function App() {
           {
             todos.map(item  => <Todo tarea={item} key={item.id} onClickRemove={removeTodoById} onToggle={updateTodoById} />)
           }
-
-
         </ul>
       </div>
     </>
