@@ -1,64 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, SafeAreaView, Button } from 'react-native';
-import contactService from './services/contacts';
-import { useEffect, useState } from 'react';
 
-import constants from "expo-constants";
-
-
-import { Card } from '@rneui/themed';
-import Contact from './components/Contact';
-import ContactScrollView from './components/ContactScrollView';
-import ContactFlatList from './components/ContactFlatList';
-
-export default function App() {
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './Screens/HomeScreen'
+import RegisterLoginScreen from './Screens/RegisterLoginScreen';
 
 
-  const [contacts, setContacts] = useState([])
+const Stack = createStackNavigator()
 
-  useEffect(() => {
-    contactService.getContacts().then(contacts => {
-      setContacts(contacts)
-    })
-  }, [])
 
+
+export default function App(){
   return (
-    <SafeAreaView>
-      <View>
-        <StatusBar style="auto" />
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Listado de Contactos</Text>
-          <Button title="Agregar Contacto" />
-        </View>
-        
-        {/* ScrollView */}
-        {/* <ContactScrollView contacts={contacts} /> */}
-
-        {/* FlatList */}
-        <ContactFlatList contacts={contacts} />
-        
-
-
-      </View>
-    </SafeAreaView>
-
-  );
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='RegisterLogin'>
+        <Stack.Screen name='PantallaHome' component={HomeScreen}/>
+        <Stack.Screen name='RegisterLogin' component={RegisterLoginScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
