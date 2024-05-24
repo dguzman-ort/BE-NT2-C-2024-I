@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, SafeAreaView, Button, TextInput } from 'react-native';
 import contactService from '../services/contacts';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ContactFlatList from '../components/ContactFlatList';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
 
+  const navigation = useNavigation()
 
   const [contacts, setContacts] = useState([])
   const [ showForm, setShowForm ] = useState(false);
@@ -17,11 +19,20 @@ export default function HomeScreen() {
 
   
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
+    console.log('Focus')
     contactService.getContacts().then(contacts => {
       setContacts(contacts)
     })
-  }, [])
+    .catch(err => {
+      console.log(err)
+    })
+    }, [])
+    // Este corchete (array) es como una lupa: Si mira a la nada se ejecuta una sola vez
+    // sino, se ejecuta cada vez que cambia el valor de la variable que esta dentro del array
+
+
+  )
 
   const handleInput = (name, value) => {
     setNewContact({ ...newContact, [name]: value})
@@ -39,8 +50,8 @@ export default function HomeScreen() {
         <StatusBar style="auto" />
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Listado de Contactos</Text>
-          <Button title="Agregar Contacto" onPress={() => setShowForm(!showForm)}/>
+          {/* <Text style={styles.title}>Listado de Contactos</Text> */}
+          <Button title="Agregar Contacto" onPress={() => navigation.navigate('ContactFormScreen')}/>
         </View>
 
         {

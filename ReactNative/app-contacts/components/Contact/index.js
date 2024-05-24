@@ -1,21 +1,22 @@
 import { Card } from "@rneui/base"
 import { useEffect } from "react"
-import { Text, View, Image } from "react-native"
+import { Text, View, Image, Button } from "react-native"
 
 
-export default ({contact}) => {
+export default ({ contact }) => {
   // useEffect(() => {
   //   console.log("Se renderizo un Contact")
   //   return () => {
   //     console.log("Se desmonto un Contact")
   //   }
   // }, [])
+  
   return (
     <View>
       <Card containerStyle={{}} wrapperStyle={{}}>
         <Card.Title>{contact.fullName} ({contact.age})</Card.Title>
         <Card.Divider />
-        <View style={{position:"relative",alignItems:"center"}}>
+        <View style={{ position: "relative", alignItems: "center" }}>
           <Image
             style={{ width: "100%", height: 100 }}
             resizeMode="contain"
@@ -24,7 +25,6 @@ export default ({contact}) => {
           <Text>{contact.phone}</Text>
         </View>
       </Card>
-      
     </View>
   )
 }
