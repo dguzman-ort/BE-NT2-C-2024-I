@@ -1,6 +1,8 @@
 
 const MAX_CONTACT_SIZE = 10000
 
+const BASE_URL = 'https://us-central1-api-nt2-ejemplo.cloudfunctions.net/app/api/'
+
 const nombres = ['Carlos', 'Paula', 'Lionel', 'Elena', 'Mateo', `Enzo`]
 const apellidos = ['Messi', 'Perez', 'Romero', 'Gomez', 'Di Maria', `Martinez`]
 
@@ -29,12 +31,109 @@ const getContacts = () => {
   //return Array.from({ length: 10 }, crearContacto)
   return new Promise((resolve, reject) => {
     
-      return resolve(Array.from({ length: MAX_CONTACT_SIZE }, crearContacto))
-    
+      // return resolve(Array.from({ length: MAX_CONTACT_SIZE }, crearContacto))
+      fetch(`${BASE_URL}read`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer xxxx"
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          return resolve(res.json())
+        }else{
+          return reject('Error al obtener los contactos')
+        }
+      })
   })
 }
 
+const getContactById = (id) => {
+  //TODO: Va a buscar en una API la informacion de contactos
+  //return Array.from({ length: 10 }, crearContacto)
+  return new Promise((resolve, reject) => {
+    
+      fetch(`${BASE_URL}read/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer xxxx"
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          return resolve(res.json())
+        }else{
+          return reject('Error al obtener los contactos')
+        }
+      })
+  })
+}
+
+const createContact = (contact) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${BASE_URL}create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer xxxx"
+      },
+      body: JSON.stringify(contact)
+    })
+    .then(res => {
+      if (res.status === 200) {
+        return resolve(res.json())
+      }else{
+        return reject('Error al crear contacto')
+      }
+    })
+  })
+}
+
+const updateContact = (id, contact) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${BASE_URL}update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer xxxx"
+      },
+      body: JSON.stringify(contact)
+    })
+    .then(res => {
+      if (res.status === 200) {
+        return resolve(true)
+      }else{
+        return reject('Error al actualizar contacto')
+      }
+    })
+  })
+}
+
+const deleteContact = (id) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${BASE_URL}delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer xxxx"
+      }
+    })
+    .then(res => {
+      if (res.status === 200) {
+        return resolve(true)
+      }else{
+        return reject('Error al eliminar contacto')
+      }
+    })
+  })
+}
 
 export default {
-  getContacts
+  getContacts,
+  getContactById,
+  createContact,
+  deleteContact,
+  updateContact
 }
