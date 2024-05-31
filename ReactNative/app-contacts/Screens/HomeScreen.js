@@ -1,13 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, SafeAreaView, Button, TextInput } from 'react-native';
 import contactService from '../services/contacts';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import ContactFlatList from '../components/ContactFlatList';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import AuthContext from '../services/AuthContext';
 
 export default function HomeScreen() {
 
   const navigation = useNavigation()
+
+  const { authData } = useContext(AuthContext)
 
   const [contacts, setContacts] = useState([])
   const [ showForm, setShowForm ] = useState(false);
@@ -48,6 +51,10 @@ export default function HomeScreen() {
     <SafeAreaView>
       <View>
         <StatusBar style="auto" />
+
+        {/* <View>
+          <Text>Bienvenido, { authData.profile.fullName }</Text>
+        </View> */}
 
         <View style={styles.titleContainer}>
           {/* <Text style={styles.title}>Listado de Contactos</Text> */}
