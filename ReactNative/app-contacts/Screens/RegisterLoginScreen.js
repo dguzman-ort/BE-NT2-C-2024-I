@@ -1,31 +1,37 @@
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { View, Text, Button, StyleSheet, TextInput, Switch, KeyboardAvoidingView, Platform} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import AuthContext from '../services/AuthContext';
+import authService from '../services/login';
 
 export default function RegisterLoginScreen(){
 
     const [email, setEmail ] = useState('')
     const [password, setPassword] = useState('')
     const [nombre, setNombre ] = useState('')
-    const [esLogin, setEsLogin ] = useState(false)
+    const [esLogin, setEsLogin ] = useState(true)
 
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
+
+    const { setAuthData } = useContext(AuthContext)
 
     const HandleLogin = () => {
-        if(email === 'admin@admin.com' && password === 'admin'){
-            alert('Login Conseguido')
-            navigation.replace('PantallaHome')
-        }else{
-            alert('Login Fallado')
-        }
+        //TODO: Llamar al backend (o al servicio de autenticacion elegido) para obtener el token
+        authService.login(email, password)
+        .then((authData) => {
+            setAuthData(authData)
+        })
+        .catch((error) => {
+            alert(error)
+        })
 
     }
 
     const HandleRegister = () =>{
         if( email && password ){
             alert(`${nombre} se ha registrado correctamente`)
-            navigation.navigate('PantallaHome')
+            // navigation.navigate('PantallaHome')
         }else{
             alert('Registro Fallado, revisa los campos')
         }
@@ -61,6 +67,7 @@ export default function RegisterLoginScreen(){
         <TextInput
             style={ styles.input}
             placeholder='Ingrese su Password'
+            secureTextEntry
             value={password}
             onChangeText={setPassword}
         />
